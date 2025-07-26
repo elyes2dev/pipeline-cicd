@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        MYSQL_DB = 'mydb'
+        MYSQL_DB = 'database'
         MYSQL_PORT = '3306'
     }
 
