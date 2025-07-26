@@ -6,7 +6,28 @@ pipeline {
         maven 'Maven3'
     }
 
+    environment {
+        MYSQL_DB = 'mydb'
+        MYSQL_PORT = '3306'
+    }
+
     stages {
+        stage('Start MySQL (no password)') {
+            steps {
+                sh '''
+                docker run --name mysql-test \
+                    -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+                    -e MYSQL_DATABASE=$MYSQL_DB \
+                    -p $MYSQL_PORT:3306 \
+                    -d mysql:8.0 \
+                    --default-authentication-plugin=mysql_native_password
+
+                echo "Waiting for MySQL to start..."
+                sleep 20
+                '''
+            }
+        }
+
         stage("Cleanup Workspace") {
             steps {
                 cleanWs()
@@ -42,6 +63,21 @@ pipeline {
                     sh 'mvn test'
                 }
             }
+        }
+
+        stage('Stop MySQL') {
+            steps {
+                sh '''
+                docker stop mysql-test || true
+                docker rm mysql-test || true
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished'
         }
     }
 }
