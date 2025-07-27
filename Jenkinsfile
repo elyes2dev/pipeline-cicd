@@ -5,6 +5,7 @@ pipeline {
         jdk 'Java17'
         maven 'Maven3'
         nodejs 'Node22'
+        sonarScanner 'sonarqube-scanner'  // Use your exact tool name here
     }
 
     environment {
@@ -66,11 +67,23 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
+        stage('SonarQube Analysis Backend') {
             steps {
-                script {
+                dir('backend') {
+                    script {
+                        withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
+                            sh 'mvn sonar:sonar'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('SonarQube Analysis Frontend') {
+            steps {
+                dir('frontend') {
                     withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
-                        sh 'mvn sonar:sonar'
+                        sh 'sonar-scanner'
                     }
                 }
             }
