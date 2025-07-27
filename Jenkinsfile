@@ -10,7 +10,12 @@ pipeline {
     environment {
         MYSQL_DB = 'database'
         MYSQL_PORT = '3306'
-        CHROME_BIN = '/usr/bin/google-chrome'
+        APP_NAME = "portfolio-app-pipeline"
+        RELEASE = "1.0.0"
+        DOCKER_USER = "elyeshub"
+        DOCKER_PASS = 'dockerhub'
+        IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
 
     stages {
@@ -84,7 +89,7 @@ pipeline {
                 dir('frontend') {
                     script {
                         withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
-                            sh 'npm install --g sonar-scanner'
+                            sh 'npm install --global sonar-scanner'
                             sh 'npx sonar-scanner'
                         }
                     }
@@ -92,14 +97,33 @@ pipeline {
             }
         }
 
-      stage('Quality Gate') {
-          steps {
-              script {
-                  waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
-              }
-          }
-      }
+        stage('Quality Gate') {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
+                }
+            }
+        }
 
+        stage('Build & Push Docker Images') {
+            steps {
+                script {
+                    // Build and push backend image
+                    docker.withRegistry('', DOCKER_PASS) {
+                        def backendImage = docker.build("${IMAGE_NAME}-backend:${IMAGE_TAG}", 'backend/')
+                        backendImage.push()
+                        backendImage.push('latest')
+                    }
+
+                    // Build and push frontend image
+                    docker.withRegistry('', DOCKER_PASS) {
+                        def frontendImage = docker.build("${IMAGE_NAME}-frontend:${IMAGE_TAG}", 'frontend/')
+                        frontendImage.push()
+                        frontendImage.push('latest')
+                    }
+                }
+            }
+        }
 
         stage('Stop MySQL') {
             steps {
@@ -107,6 +131,17 @@ pipeline {
                     docker stop mysql-test || true
                     docker rm mysql-test || true
                 '''
+            }
+        }
+
+        stage('Cleanup Artifacts') {
+            steps {
+                script {
+                    sh "docker rmi ${IMAGE_NAME}-backend:${IMAGE_TAG} || true"
+                    sh "docker rmi ${IMAGE_NAME}-backend:latest || true"
+                    sh "docker rmi ${IMAGE_NAME}-frontend:${IMAGE_TAG} || true"
+                    sh "docker rmi ${IMAGE_NAME}-frontend:latest || true"
+                }
             }
         }
     }
