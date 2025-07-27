@@ -84,7 +84,7 @@ pipeline {
                 dir('frontend') {
                     script {
                         withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
-                            sh 'sonarqube-scanner'
+                            sh 'npx sonar-scanner'
                         }
                     }
                 }
