@@ -77,17 +77,7 @@ pipeline {
                 }
             }
         }
-
-        stage('SonarQube Analysis Frontend') {
-            steps {
-                dir('frontend') {
-                    withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
-                        sh 'sonar-scanner'
-                    }
-                }
-            }
-        }
-
+        
         stage('Stop MySQL') {
             steps {
                 sh '''
