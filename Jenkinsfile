@@ -16,32 +16,32 @@ pipeline {
         stage('Start MySQL (no password)') {
             steps {
                 sh '''
-                docker run --name mysql-test \
-                    -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
-                    -e MYSQL_DATABASE=$MYSQL_DB \
-                    -p $MYSQL_PORT:3306 \
-                    -d mysql:8.0 \
-                    --default-authentication-plugin=mysql_native_password
+                    docker run --name mysql-test \
+                        -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+                        -e MYSQL_DATABASE=$MYSQL_DB \
+                        -p $MYSQL_PORT:3306 \
+                        -d mysql:8.0 \
+                        --default-authentication-plugin=mysql_native_password
 
-                echo "Waiting for MySQL to start..."
-                sleep 20
+                    echo "Waiting for MySQL to start..."
+                    sleep 20
                 '''
             }
         }
 
-        stage("Cleanup Workspace") {
+        stage('Cleanup Workspace') {
             steps {
                 cleanWs()
             }
         }
 
-        stage("Checkout from SCM") {
+        stage('Checkout from SCM') {
             steps {
                 git branch: 'main', credentialsId: 'github', url: 'https://github.com/elyes2dev/pipeline-cicd'
             }
         }
 
-        stage("Build Application") {
+        stage('Build Application') {
             steps {
                 script {
                     // Build Angular frontend
@@ -58,7 +58,7 @@ pipeline {
             }
         }
 
-        stage("Test Application") {
+        stage('Test Application') {
             steps {
                 dir('backend') {
                     sh 'mvn test'
@@ -66,11 +66,21 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
+
         stage('Stop MySQL') {
             steps {
                 sh '''
-                docker stop mysql-test || true
-                docker rm mysql-test || true
+                    docker stop mysql-test || true
+                    docker rm mysql-test || true
                 '''
             }
         }
