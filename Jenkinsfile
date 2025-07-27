@@ -58,10 +58,18 @@ pipeline {
             }
         }
 
-        stage('Test Application') {
+        stage('Test Backend') {
             steps {
                 dir('backend') {
                     sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Test Frontend') {
+            steps {
+                dir('frontend') {
+                    sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
                 }
             }
         }
@@ -77,7 +85,19 @@ pipeline {
                 }
             }
         }
-        
+
+        stage('SonarQube Analysis Frontend') {
+            steps {
+                dir('frontend') {
+                    script {
+                        withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
+                            sh 'sonarqube-scanner'
+                        }
+                    }
+                }
+            }
+        }
+
         stage('Stop MySQL') {
             steps {
                 sh '''
