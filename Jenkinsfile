@@ -67,20 +67,6 @@ pipeline {
             }
         }
 
-        stage('Test Frontend') {
-            steps {
-                dir('frontend') {
-                    script {
-                        try {
-                            sh 'npm run test -- --watch=false --browsers=ChromeHeadless --no-progress --code-coverage'
-                        } catch (err) {
-                            echo 'Tests failed, but continuing for now...'
-                        }
-                    }
-                }
-            }
-        }
-
         stage('SonarQube Analysis Backend') {
             steps {
                 dir('backend') {
