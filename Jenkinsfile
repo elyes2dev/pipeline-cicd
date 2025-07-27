@@ -10,7 +10,7 @@ pipeline {
     environment {
         MYSQL_DB = 'database'
         MYSQL_PORT = '3306'
-        CHROME_BIN = 'usr/bin/google-chrome'
+        CHROME_BIN = '/usr/bin/google-chrome'
     }
 
     stages {
