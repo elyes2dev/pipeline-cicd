@@ -69,7 +69,7 @@ pipeline {
         stage('Test Frontend') {
             steps {
                 dir('frontend') {
-                    sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
+                    sh 'npm run test -- --watch=false --code-coverage'
                 }
             }
         }
