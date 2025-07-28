@@ -1,88 +1,407 @@
-.profile-container {
-    background: linear-gradient(to bottom right, #0f172a, #1e293b);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    padding: 2rem;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+/* AWS Theme Base Styles */
+.aws-login-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #232F3E 0%, #1A3A5F 100%);
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  padding: 20px;
+}
+
+.aws-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  top: 0;
+  left: 0;
+}
+
+.aws-logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  opacity: 0.1;
+  width: 100px;
+}
+
+.aws-clouds {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.cloud {
+  position: absolute;
+  background-color: rgba(255, 153, 0, 0.05);
+  border-radius: 50%;
+}
+
+.cloud-1 {
+  width: 300px;
+  height: 100px;
+  top: 20%;
+  left: 10%;
+  animation: float 15s infinite ease-in-out;
+}
+
+.cloud-2 {
+  width: 200px;
+  height: 70px;
+  bottom: 25%;
+  right: 15%;
+  animation: float 12s infinite ease-in-out reverse;
+}
+
+.cloud-3 {
+  width: 400px;
+  height: 120px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: float 20s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Login Container */
+.login-container {
+  display: flex;
+  max-width: 1000px;
+  width: 100%;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  z-index: 1;
+  position: relative;
+}
+
+/* Profile Section */
+.profile-showcase {
+  flex: 1;
+  background: rgba(35, 47, 62, 0.9);
+  color: white;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-right: 1px solid #FF9900;
+}
+
+.profile-picture {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 3px solid #FF9900;
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #FF9900;
+  color: #232F3E;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.profile-showcase h1 {
+  font-size: 28px;
+  margin: 10px 0;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.profile-showcase .title {
+  font-size: 16px;
+  opacity: 0.9;
+  margin-bottom: 30px;
+  color: #FF9900;
+}
+
+.aws-certifications {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.aws-badge {
+  background-color: rgba(255, 153, 0, 0.2);
+  color: #FF9900;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  border: 1px solid #FF9900;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.social-link {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  background-color: rgba(255, 153, 0, 0.5);
+  transform: translateY(-3px);
+}
+
+/* Login Form */
+.login-form {
+  flex: 1;
+  padding: 60px 40px;
+  background-color: white;
+}
+
+.aws-form-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.aws-powered-by {
+  height: 40px;
+  margin-bottom: 15px;
+}
+
+.login-form h2 {
+  font-size: 28px;
+  color: #FF9900;
+  margin-bottom: 5px;
+}
+
+.login-form .subtitle {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-container i {
+  position: absolute;
+  left: 15px;
+  color: #777;
+}
+
+.input-container .toggle-password {
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+  color: #777;
+}
+
+.input-container .toggle-password:hover {
+  color: #333;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 12px 15px 12px 45px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.input-container input:focus {
+  border-color: #FF9900;
+  box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.2);
+  outline: none;
+}
+
+.input-container input.invalid {
+  border-color: #f87171;
+}
+
+.error-message {
+  color: #f87171;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+}
+
+.remember-me input {
+  margin-right: 8px;
+}
+
+.forgot-password {
+  color: #FF9900;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.forgot-password:hover {
+  color: #e68a00;
+}
+
+.login-button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(to right, #FF9900, #FFAC31);
+  color: #232F3E;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  font-weight: bold;
+}
+
+.login-button:hover {
+  background: linear-gradient(to right, #FFAC31, #FF9900);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 153, 0, 0.3);
+}
+
+.login-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.login-error {
+  color: #f87171;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.signup-link a {
+  color: #FF9900;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .aws-login-container {
+    padding: 10px;
+    align-items: flex-start;
   }
   
-  .profile-card {
-    background-color: #0c0c0c;
-    color: #f1f5f9;
-    padding: 2rem;
-    border-radius: 1.5rem;
-    width: 100%;
-    max-width: 900px;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+  .login-container {
+    flex-direction: column;
+    margin-top: 20px;
   }
   
-  .header {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #334155;
-    padding-bottom: 1.5rem;
-    margin-bottom: 2rem;
+  .profile-showcase {
+    padding: 30px;
+    border-right: none;
+    border-bottom: 1px solid #FF9900;
   }
   
-  .avatar {
+  .login-form {
+    padding: 40px 30px;
+  }
+  
+  .aws-logo {
+    width: 60px;
+    top: 10px;
+    left: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-showcase, .login-form {
+    padding: 25px 20px;
+  }
+  
+  .profile-picture {
     width: 120px;
     height: 120px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #0ea5e9;
-    margin-right: 2rem;
   }
   
-  .title-section h1 {
-    margin: 0;
-    font-size: 2rem;
-    color: #0ea5e9;
+  .login-form h2 {
+    font-size: 24px;
   }
-  
-  .title-section h2 {
-    margin: 0.2rem 0;
-    font-weight: 400;
-    color: #94a3b8;
-  }
-  
-  .section {
-    margin-bottom: 2rem;
-  }
-  
-  .section h3 {
-    border-left: 4px solid #0ea5e9;
-    padding-left: 0.5rem;
-    margin-bottom: 1rem;
-    color: #38bdf8;
-  }
-  
-  .skills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-  
-  .skills span {
-    background-color: #1e293b;
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    border: 1px solid #0ea5e9;
-    font-size: 0.9rem;
-    color: #f1f5f9;
-  }
-  
-  ul {
-    list-style: none;
-    padding-left: 0;
-  }
-  
-  ul li {
-    margin-bottom: 1rem;
-    line-height: 1.6;
-  }
-  
-  p {
-    margin: 0.5rem 0;
-  }
-  
+}

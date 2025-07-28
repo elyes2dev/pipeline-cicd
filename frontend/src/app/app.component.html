@@ -1,99 +1,110 @@
-<div class="profile-container">
-  <div class="profile-card">
-    <div class="header">
-      <img src="assets/image/elyes.jpg" alt="Elyes Zoghlami" class="avatar" />
-      <div class="title-section">
-        <h1>Elyes Zoghlami</h1>
-        <h2>Cloud & DevOps Engineer</h2>
-        <p>📍 Tunisia </p>
-        <p>📧 elyes.zoghlami.1@esprit.tn | 📞 +216 21 148 869</p>
+<div class="aws-login-container">
+  <!-- AWS Background Elements -->
+  <div class="aws-background">
+    <div class="aws-logo">
+      <svg viewBox="0 0 304 182" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#FF9900" d="M86 0h40l9 17 11-17h40l-19 30 19 30h-40l-11-17-9 17H86l19-30L86 0zm128 0h40l9 17 11-17h40l-19 30 19 30h-40l-11-17-9 17h-40l19-30L214 0zm-64 60h40l9 17 11-17h40l-19 30 19 30h-40l-11-17-9 17h-40l19-30L150 60zm-64 60h40l9 17 11-17h40l-19 30 19 30h-40l-11-17-9 17H86l19-30L86 120z"/>
+      </svg>
+    </div>
+    <div class="aws-clouds">
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+      <div class="cloud cloud-3"></div>
+    </div>
+  </div>
+
+  <div class="login-container">
+    <div class="profile-showcase">
+      <div class="profile-picture">
+        <img src="assets/image/ely1.jpeg" alt="AWS Professional">
+        <div class="badge">AWS Certified</div>
+      </div>
+      <h1>Elyes Zoghlami</h1>
+      <p class="title">Cloud Computing & DevOps Engineer</p>
+      <div class="aws-certifications">
+        <span class="aws-badge">Solutions Architect</span>
+        <span class="aws-badge">Cloud Computing</span>
+        <span class="aws-badge">DevOps</span>
+      </div>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
       </div>
     </div>
 
-    <div class="section">
-      <h3>About Me</h3>
-      <p>
-        A dedicated Computer Science Engineering student with strong expertise in cloud computing and DevOps. Skilled
-        in CI/CD, Kubernetes, Docker, and Infrastructure-as-Code. Actively seeking opportunities to apply and deepen
-        my hands-on knowledge in modern cloud-native environments.
-      </p>
-    </div>
-
-    <div class="section">
-      <h3>Work Experience</h3>
-      <ul>
-        <li>
-          <strong>DevSecOps Intern – Deloitte</strong><br />
-          <em>Aug 2024 – Sep 2024</em><br />
-          Built secure CI/CD pipelines using Jenkins, SonarQube, OWASP ZAP, and Python-based classifiers.
-        </li>
-        <li>
-          <strong>DevOps Intern – ESPRIT</strong><br />
-          <em>Jul 2024 – Aug 2024</em><br />
-          Developed and containerized an E-Library app using Angular, Spring Boot, and Kubernetes.
-        </li>
-        <li>
-          <strong>Business Intelligence Intern – SAGEMCOM</strong><br />
-          <em>Feb 2023 – May 2023</em><br />
-          Built BI dashboards, predictive models (ARIMA, SARIMA, XGBoost), and cloud-hosted insights.
-        </li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h3>Education</h3>
-      <ul>
-        <li><strong>ESPRIT</strong> — Engineering Degree in Computer Science (2023–Present)</li>
-        <li><strong>ISTIC</strong> — Bachelor’s Degree in Computer Science (2020–2023)</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h3>Technical Skills</h3>
-      <div class="skills">
-        <span>Docker</span>
-        <span>Kubernetes</span>
-        <span>Terraform</span>
-        <span>Jenkins</span>
-        <span>Ansible</span>
-        <span>ELK</span>
-        <span>Grafana</span>
-        <span>AWS</span>
-        <span>Azure</span>
-        <span>Python</span>
-        <span>Java</span>
-        <span>Spring Boot</span>
-        <span>Angular</span>
-        <span>Symfony</span>
+    <div class="login-form">
+      <div class="aws-form-header">
+        <img src="https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png" 
+             alt="Powered by AWS" 
+             class="aws-powered-by">
+        <h2>AWS Management Console</h2>
+        <p class="subtitle">Sign in to your Cloud Dashboard</p>
       </div>
-    </div>
 
-    <div class="section">
-      <h3>Certifications</h3>
-      <ul>
-        <li>CCNA (Cisco)</li>
-        <li>LFCA (Linux Foundation)</li>
-        <li>AWS Cloud Practitioner</li>
-        <li>IBM Big Data Engineer</li>
-      </ul>
-    </div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Root User Email Address</label>
+          <div class="input-container">
+            <i class="fas fa-envelope"></i>
+            <input 
+              type="email" 
+              id="email" 
+              formControlName="email" 
+              placeholder="Enter your AWS email"
+              [ngClass]="{'invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched}">
+          </div>
+          <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-message">
+            <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</span>
+            <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+          </div>
+        </div>
 
-    <div class="section">
-      <h3>Languages</h3>
-      <p>English (Fluent), French (Professional), German (Basic proficiency)</p>
-    </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-container">
+            <i class="fas fa-lock"></i>
+            <input 
+              [type]="showPassword ? 'text' : 'password'" 
+              id="password" 
+              formControlName="password" 
+              placeholder="Enter your password"
+              [ngClass]="{'invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}">
+            <i 
+              class="fas fa-eye toggle-password" 
+              [ngClass]="{'fa-eye-slash': showPassword}" 
+              (click)="togglePasswordVisibility()">
+            </i>
+          </div>
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-message">
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</span>
+            <span *ngIf="loginForm.get('password')?.errors?.['minlength']">
+              Password must be at least 6 characters
+            </span>
+          </div>
+        </div>
 
-    <div class="section">
-      <h3>Projects</h3>
-      <ul>
-        <li><strong>Cloud Infrastructure & App Deployment</strong> — Built private cloud with OpenStack and deployed Kubernetes clusters using Ansible.</li>
-        <li><strong>MatchMate App</strong> — Cross-platform sports reservation app built with Symfony, FlutterFlow, and JavaFX.</li>
-      </ul>
-    </div>
+        <div class="form-options">
+          <div class="remember-me">
+            <input type="checkbox" id="remember">
+            <label for="remember">Remember me</label>
+          </div>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
 
-    <div class="section">
-      <h3>Interests</h3>
-      <p>Professional eSports Player, Streamer, Gamer</p>
+        <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Sign In</span>
+          <span *ngIf="isLoading" class="spinner"></span>
+        </button>
+
+        <div *ngIf="loginError" class="login-error">
+          {{ loginError }}
+        </div>
+
+        <div class="signup-link">
+          New to AWS? <a href="#">Create a new account</a>
+        </div>
+      </form>
     </div>
   </div>
 </div>
