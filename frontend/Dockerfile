@@ -4,8 +4,11 @@ FROM nginx:alpine
 # Remove default nginx static content
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy the Angular build output from the pipeline workspace to nginx html folder
+# Copy Angular build output to nginx html folder
 COPY dist/ /usr/share/nginx/html/
+
+# Copy custom nginx configuration to replace the default one
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
 EXPOSE 80
