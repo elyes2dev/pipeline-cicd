@@ -8,14 +8,14 @@ pipeline {
     }
 
     environment {
-        MYSQL_DB = 'database'
-        MYSQL_PORT = '3306'
-        APP_NAME = "portfolio-app-pipeline"
-        RELEASE = "1.0.0"
-        DOCKER_USER = "elyeshub"
-        DOCKER_PASS = 'dockerhub'
-        IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
-        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+        MYSQL_DB     = 'database'
+        MYSQL_PORT   = '3306'
+        APP_NAME     = "portfolio-app-pipeline"
+        RELEASE      = "1.0.0"
+        DOCKER_USER  = "elyeshub"
+        DOCKER_PASS  = 'dockerhub'
+        IMAGE_NAME   = "${DOCKER_USER}/${APP_NAME}"
+        IMAGE_TAG    = "${RELEASE}-${BUILD_NUMBER}"
     }
 
     stages {
@@ -125,14 +125,14 @@ pipeline {
             }
         }
 
-             stage("Trivy Scan") {
-           steps {
-               script {
-	            sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image elyeshub/portfolio-app-pipeline-frontend:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
-                    sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image elyeshub/portfolio-app-pipeline-backend:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
-               }
-           }
-       }
+        stage('Trivy Scan') {
+            steps {
+                script {
+                    sh 'docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image elyeshub/portfolio-app-pipeline-frontend:latest --no-progress --scanners vuln --exit-code 0 --severity HIGH,CRITICAL --format table'
+                    sh 'docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image elyeshub/portfolio-app-pipeline-backend:latest --no-progress --scanners vuln --exit-code 0 --severity HIGH,CRITICAL --format table'
+                }
+            }
+        }
 
         stage('Stop MySQL') {
             steps {
@@ -150,6 +150,14 @@ pipeline {
                     sh "docker rmi ${IMAGE_NAME}-backend:latest || true"
                     sh "docker rmi ${IMAGE_NAME}-frontend:${IMAGE_TAG} || true"
                     sh "docker rmi ${IMAGE_NAME}-frontend:latest || true"
+                }
+            }
+        }
+
+        stage('Trigger CD Pipeline') {
+            steps {
+                script {
+                    sh "curl -v -k --user elyesaws:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'ec2-52-47-111-164.eu-west-3.compute.amazonaws.com:8080/job/gitops-pipeline-cd/buildWithParameters?token=argocd-token'"
                 }
             }
         }
