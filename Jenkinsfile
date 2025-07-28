@@ -19,22 +19,29 @@ pipeline {
         JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
     }
 
-    stages {
-        stage('Start MySQL (no password)') {
-            steps {
-                sh '''
-                    docker run --name mysql-test \
-                        -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
-                        -e MYSQL_DATABASE=$MYSQL_DB \
-                        -p $MYSQL_PORT:3306 \
-                        -d mysql:8.0 \
-                        --default-authentication-plugin=mysql_native_password
+stage('Start MySQL (no password)') {
+    steps {
+        sh '''
+            # Stop and remove existing mysql-test container if exists
+            if [ "$(docker ps -aq -f name=mysql-test)" ]; then
+                echo "Removing existing mysql-test container..."
+                docker stop mysql-test || true
+                docker rm mysql-test || true
+            fi
 
-                    echo "Waiting for MySQL to start..."
-                    sleep 20
-                '''
-            }
-        }
+            # Run new mysql container
+            docker run --name mysql-test \
+                -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+                -e MYSQL_DATABASE=$MYSQL_DB \
+                -p $MYSQL_PORT:3306 \
+                -d mysql:8.0 \
+                --default-authentication-plugin=mysql_native_password
+
+            echo "Waiting for MySQL to start..."
+            sleep 20
+        '''
+    }
+}
 
         stage('Cleanup Workspace') {
             steps {
