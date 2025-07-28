@@ -5,7 +5,7 @@ FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy Angular build output to nginx html folder
-COPY dist/ /usr/share/nginx/html/
+COPY dist/frontend/ /usr/share/nginx/html/
 
 # Copy custom nginx configuration to replace the default one
 COPY nginx.conf /etc/nginx/conf.d/default.conf
